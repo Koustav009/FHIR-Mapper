@@ -17,4 +17,12 @@ public class BundleFieldIdentifier {
   public static final String CODE = "code";
   public static final String DISPLAY = "display";
   public static final String MEDICAL_CONDITION = "MedicalCondition";
+  public static final String POLICY_NUMBER = "policyNumber";
+  public static final String POLICY_NUMBER_DISPLAY = "PolicyNumber";
+  public static final String PROVIDER_ID = "providerId";
+  public static final String PROVIDER_ID_DISPLAY = "ProviderId";
+  public static final String TASK_POLL = "poll";
+  public static final String TASK_POLL_DISPLAY = "Poll";
+  public static final String TASK_DESCRIPTION =
+      "Give the details of Insurance plan linked with the given policy number";
 }

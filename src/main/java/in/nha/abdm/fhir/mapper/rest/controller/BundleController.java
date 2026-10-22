@@ -55,6 +55,7 @@ public class BundleController {
   private final ClaimResponseConverter claimResponseConverter;
   private final InsurancePlanConverter insurancePlanConverter;
   private final PaymentNoticeConverter paymentNoticeConverter;
+  private final TaskBundleInsurancePlanConverter taskBundleInsurancePlanConverter;
   private final InpsConverter inpsConverter;
   private final InpsAggregationService inpsAggregationService;
   private final FhirValidationService fhirValidationService;
@@ -82,6 +83,7 @@ public class BundleController {
       ClaimResponseConverter claimResponseConverter,
       InsurancePlanConverter insurancePlanConverter,
       PaymentNoticeConverter paymentNoticeConverter,
+      TaskBundleInsurancePlanConverter taskBundleInsurancePlanConverter,
       InpsConverter inpsConverter,
       InpsAggregationService inpsAggregationService,
       FhirValidationService fhirValidationService,
@@ -101,6 +103,7 @@ public class BundleController {
     this.claimResponseConverter = claimResponseConverter;
     this.insurancePlanConverter = insurancePlanConverter;
     this.paymentNoticeConverter = paymentNoticeConverter;
+    this.taskBundleInsurancePlanConverter = taskBundleInsurancePlanConverter;
     this.inpsConverter = inpsConverter;
     this.inpsAggregationService = inpsAggregationService;
     this.fhirValidationService = fhirValidationService;
@@ -542,6 +545,38 @@ public class BundleController {
       })
   public Bundle createPaymentNoticeBundle(@Valid @RequestBody PaymentNoticeBundleRequest request) {
     Bundle bundle = paymentNoticeConverter.makePaymentNoticeBundle(request);
+    return validateAndReturnBundle(bundle);
+  }
+
+  /**
+   * @param request NHCX TaskBundle details for an InsurancePlan request (task, policy, provider and
+   *     insurer/hospital organisations)
+   * @return FHIR TaskBundle (collection) if no error found
+   */
+  @PostMapping(path = ControllerMappingConstants.TASK_BUNDLE_INSURANCE_PLAN_REQUEST_PATH)
+  @ResponseStatus(HttpStatus.CREATED)
+  @Operation(
+      summary = "Create NHCX TaskBundle for InsurancePlan request",
+      description =
+          "Builds an NRCES TaskBundle (collection) containing a poll Task plus the requesting"
+              + " hospital and the insurer organisation, used to retrieve the InsurancePlan linked"
+              + " to a policy number.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = SwaggerConstants.HTTP_201,
+            description = SwaggerConstants.BUNDLE_SUCCESS_DESCRIPTION,
+            content =
+                @Content(
+                    mediaType = SwaggerConstants.APPLICATION_JSON,
+                    schema = @Schema(implementation = Bundle.class))),
+        @ApiResponse(
+            responseCode = SwaggerConstants.HTTP_400,
+            description = SwaggerConstants.INVALID_BUNDLE_DESCRIPTION)
+      })
+  public Bundle createTaskBundleInsurancePlanRequest(
+      @Valid @RequestBody TaskBundleInsurancePlanRequest request) {
+    Bundle bundle = taskBundleInsurancePlanConverter.makeTaskBundle(request);
     return validateAndReturnBundle(bundle);
   }
 

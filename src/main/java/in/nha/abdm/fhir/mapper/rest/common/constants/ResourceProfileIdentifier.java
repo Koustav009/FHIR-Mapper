@@ -92,6 +92,14 @@ public class ResourceProfileIdentifier {
       "https://nrces.in/ndhm/fhir/r4/StructureDefinition/PaymentNotice";
   public static final String PROFILE_PAYMENT_NOTICE_BUNDLE =
       "https://nrces.in/ndhm/fhir/r4/StructureDefinition/PaymentNoticeBundle";
+  public static final String PROFILE_TASK =
+      "https://nrces.in/ndhm/fhir/r4/StructureDefinition/Task";
+  public static final String PROFILE_TASK_BUNDLE =
+      "https://nrces.in/ndhm/fhir/r4/StructureDefinition/TaskBundle";
+  public static final String FINANCIAL_TASK_CODE_SYSTEM =
+      "http://terminology.hl7.org/CodeSystem/financialtaskcode";
+  public static final String TASK_INPUT_TYPE_CODE_SYSTEM =
+      "https://nrces.in/ndhm/fhir/r4/CodeSystem/ndhm-task-input-type-code";
   public static final String PAYMENT_STATUS_SYSTEM =
       "http://terminology.hl7.org/CodeSystem/paymentstatus";
   public static final String DIAGNOSIS_TYPE_SYSTEM =
