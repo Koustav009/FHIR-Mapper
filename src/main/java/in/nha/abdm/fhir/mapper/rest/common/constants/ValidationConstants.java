@@ -62,6 +62,20 @@ public class ValidationConstants {
   public static final String PROVIDER_ID_MANDATORY = "providerId is mandatory";
   public static final String REQUESTER_MANDATORY = "requester organisation is mandatory";
   public static final String OWNER_MANDATORY = "owner organisation is mandatory";
+  public static final String COMMUNICATION_STATUS_PATTERN =
+      "preparation|in-progress|not-done|on-hold|stopped|completed|entered-in-error|unknown";
+  public static final String COMMUNICATION_STATUS_MESSAGE =
+      "status must be preparation | in-progress | not-done | on-hold | stopped | completed |"
+          + " entered-in-error | unknown";
+  public static final String COMMUNICATION_PRIORITY_PATTERN = "routine|urgent|asap|stat";
+  public static final String COMMUNICATION_PRIORITY_MESSAGE =
+      "priority must be routine | urgent | asap | stat";
+  public static final String COMMUNICATION_CATEGORY_PATTERN =
+      "alert|notification|reminder|instruction";
+  public static final String COMMUNICATION_CATEGORY_MESSAGE =
+      "category must be alert | notification | reminder | instruction";
+  public static final String COMMUNICATION_PAYLOAD_MANDATORY =
+      "payload is mandatory and must not be empty";
   public static final String INPS_RECORD = "PatientSummaryRecord";
   public static final String INVOICE_MANDATORY = "invoice is mandatory";
   public static final String STATUS_MANDATORY = "status is mandatory";

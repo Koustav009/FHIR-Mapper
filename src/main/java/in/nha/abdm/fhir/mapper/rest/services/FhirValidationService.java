@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.DomainResource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +31,19 @@ public class FhirValidationService {
 
   public in.nha.abdm.fhir.mapper.rest.dto.validation.ValidationResult validateBundle(
       Bundle bundle) {
+    return validate(bundle);
+  }
+
+  public in.nha.abdm.fhir.mapper.rest.dto.validation.ValidationResult validateResource(
+      DomainResource resource) {
+    return validate(resource);
+  }
+
+  private in.nha.abdm.fhir.mapper.rest.dto.validation.ValidationResult validate(
+      IBaseResource resource) {
 
     try {
-      ValidationResult hapiValidationResult = fhirValidator.validateWithResult(bundle);
+      ValidationResult hapiValidationResult = fhirValidator.validateWithResult(resource);
 
       List<SingleValidationMessage> messages = hapiValidationResult.getMessages();
 

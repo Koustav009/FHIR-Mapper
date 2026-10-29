@@ -20,6 +20,7 @@ public class ControllerMappingConstants {
   public static final String PAYMENT_NOTICE_PATH = "/payment-notice";
   public static final String TASK_BUNDLE_INSURANCE_PLAN_REQUEST_PATH =
       "/task-bundle-insurance-plan-request";
+  public static final String COMMUNICATION_PATH = "/communication";
   public static final String EXTRACT_PATH = "/extract";
   public static final String HTML_PATH = "/html";
   public static final String INPS_PATH = "/inps";

@@ -157,4 +157,8 @@ public class ResourceProfileIdentifier {
       "https://nrces.in/ndhm/fhir/r4/StructureDefinition/CarePlan";
   public static final String PROFILE_IMMUNIZATION_RECOMMENDATION =
       "https://nrces.in/ndhm/fhir/r4/StructureDefinition/ImmunizationRecommendation";
+  public static final String PROFILE_COMMUNICATION =
+      "https://nrces.in/ndhm/fhir/r4/StructureDefinition/Communication";
+  public static final String COMMUNICATION_CATEGORY_SYSTEM =
+      "http://terminology.hl7.org/CodeSystem/communication-category";
 }

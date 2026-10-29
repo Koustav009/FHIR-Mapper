@@ -7,7 +7,9 @@ import in.nha.abdm.fhir.mapper.rest.common.constants.LogMessageConstants;
 import in.nha.abdm.fhir.mapper.rest.common.constants.SwaggerConstants;
 import in.nha.abdm.fhir.mapper.rest.common.helpers.ExtractedBundleResponse;
 import in.nha.abdm.fhir.mapper.rest.converter.*;
+import in.nha.abdm.fhir.mapper.rest.dto.resources.MakeCommunicationResource;
 import in.nha.abdm.fhir.mapper.rest.dto.validation.ValidationResult;
+import in.nha.abdm.fhir.mapper.rest.exceptions.ExceptionHandler;
 import in.nha.abdm.fhir.mapper.rest.exceptions.FhirValidationException;
 import in.nha.abdm.fhir.mapper.rest.requests.*;
 import in.nha.abdm.fhir.mapper.rest.services.BundleExtractionService;
@@ -25,6 +27,8 @@ import jakarta.validation.Valid;
 import java.text.ParseException;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Communication;
+import org.hl7.fhir.r4.model.DomainResource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -56,6 +60,7 @@ public class BundleController {
   private final InsurancePlanConverter insurancePlanConverter;
   private final PaymentNoticeConverter paymentNoticeConverter;
   private final TaskBundleInsurancePlanConverter taskBundleInsurancePlanConverter;
+  private final MakeCommunicationResource makeCommunicationResource;
   private final InpsConverter inpsConverter;
   private final InpsAggregationService inpsAggregationService;
   private final FhirValidationService fhirValidationService;
@@ -84,6 +89,7 @@ public class BundleController {
       InsurancePlanConverter insurancePlanConverter,
       PaymentNoticeConverter paymentNoticeConverter,
       TaskBundleInsurancePlanConverter taskBundleInsurancePlanConverter,
+      MakeCommunicationResource makeCommunicationResource,
       InpsConverter inpsConverter,
       InpsAggregationService inpsAggregationService,
       FhirValidationService fhirValidationService,
@@ -104,6 +110,7 @@ public class BundleController {
     this.insurancePlanConverter = insurancePlanConverter;
     this.paymentNoticeConverter = paymentNoticeConverter;
     this.taskBundleInsurancePlanConverter = taskBundleInsurancePlanConverter;
+    this.makeCommunicationResource = makeCommunicationResource;
     this.inpsConverter = inpsConverter;
     this.inpsAggregationService = inpsAggregationService;
     this.fhirValidationService = fhirValidationService;
@@ -580,6 +587,38 @@ public class BundleController {
     return validateAndReturnBundle(bundle);
   }
 
+  /**
+   * @param request flat communication details (status, sender, recipient, reason, payload)
+   * @return FHIR Communication resource if no error found
+   */
+  @PostMapping(path = ControllerMappingConstants.COMMUNICATION_PATH)
+  @ResponseStatus(HttpStatus.CREATED)
+  @Operation(
+      summary = "Create NRCES Communication resource",
+      description =
+          "Builds an NRCES Communication resource from a flat request, carrying attachment"
+              + " payloads, sender/recipient displays and an optional SNOMED reason code.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = SwaggerConstants.HTTP_201,
+            description = "Communication created successfully",
+            content =
+                @Content(
+                    mediaType = SwaggerConstants.APPLICATION_JSON,
+                    schema = @Schema(implementation = Communication.class))),
+        @ApiResponse(
+            responseCode = SwaggerConstants.HTTP_400,
+            description = SwaggerConstants.INVALID_BUNDLE_DESCRIPTION)
+      })
+  public Communication createCommunication(@Valid @RequestBody CommunicationBundleRequest request) {
+    try {
+      return validateAndReturnResource(makeCommunicationResource.getCommunication(request));
+    } catch (Exception e) {
+      throw ExceptionHandler.handle(e, log);
+    }
+  }
+
   @PostMapping(path = ControllerMappingConstants.INPS_PATH)
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(
@@ -661,6 +700,24 @@ public class BundleController {
       }
     }
     return bundle;
+  }
+
+  private <T extends DomainResource> T validateAndReturnResource(T resource) {
+    if (validationEnabled) {
+      ValidationResult validationResult = fhirValidationService.validateResource(resource);
+
+      if (!validationResult.isValid()) {
+        if (failOnValidationError) {
+          throw new FhirValidationException(validationResult);
+        } else {
+          log.warn(
+              LogMessageConstants.VALIDATION_FAILED_CONTINUING,
+              validationResult.getErrorCount(),
+              validationResult.getWarningCount());
+        }
+      }
+    }
+    return resource;
   }
 
   private void validateIncomingBundle(Bundle bundle) {

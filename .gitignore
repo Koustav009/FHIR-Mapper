@@ -39,3 +39,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 .commandcode/
+src/main/resources/package-6.5.0.tgz
