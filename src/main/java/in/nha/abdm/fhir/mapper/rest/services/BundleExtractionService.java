@@ -21,6 +21,7 @@ import in.nha.abdm.fhir.mapper.rest.requests.InvoiceBundleRequest;
 import in.nha.abdm.fhir.mapper.rest.requests.OPConsultationRequest;
 import in.nha.abdm.fhir.mapper.rest.requests.PaymentNoticeBundleRequest;
 import in.nha.abdm.fhir.mapper.rest.requests.PrescriptionRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.TaskBundleInsurancePlanRequest;
 import in.nha.abdm.fhir.mapper.rest.requests.WellnessRecordRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ import org.hl7.fhir.r4.model.InsurancePlan;
 import org.hl7.fhir.r4.model.PaymentNotice;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.model.Task;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -62,6 +64,7 @@ public class BundleExtractionService {
   private final InsurancePlanBundleExtractor insurancePlanBundleExtractor;
   private final PaymentNoticeBundleExtractor paymentNoticeBundleExtractor;
   private final InpsBundleExtractor inpsBundleExtractor;
+  private final TaskBundleExtractor taskBundleExtractor;
   private final CommunicationBundleExtractor communicationBundleExtractor;
 
   public ExtractedBundleResponse extract(IBaseResource resource) {
@@ -154,6 +157,15 @@ public class BundleExtractionService {
             bundle -> {
               PaymentNoticeBundleRequest request = paymentNoticeBundleExtractor.extract(bundle);
               request.setBundleType(ValidationConstants.PAYMENT_NOTICE_RECORD);
+              return request;
+            }),
+        new NhcxExtractorDefinition(
+            ValidationConstants.TASK_BUNDLE,
+            ResourceProfileIdentifier.PROFILE_TASK_BUNDLE,
+            Task.class,
+            bundle -> {
+              TaskBundleInsurancePlanRequest request = taskBundleExtractor.extract(bundle);
+              request.setBundleType(ValidationConstants.TASK_BUNDLE);
               return request;
             }));
   }
