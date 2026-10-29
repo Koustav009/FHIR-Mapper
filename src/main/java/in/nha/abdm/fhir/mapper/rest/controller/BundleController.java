@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.text.ParseException;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Communication;
 import org.hl7.fhir.r4.model.DomainResource;
@@ -643,7 +644,11 @@ public class BundleController {
   }
 
   @PostMapping(path = ControllerMappingConstants.EXTRACT_PATH)
-  @Operation(summary = "Extract DTO from FHIR Bundle", description = "Reverse maps a FHIR Bundle")
+  @Operation(
+      summary = "Extract DTO from FHIR Bundle or Communication",
+      description =
+          "Reverse maps a FHIR Bundle (NHCX or clinical-record) or a bare NRCES Communication"
+              + " resource back into the original request DTO")
   @ApiResponses(
       value = {
         @ApiResponse(
@@ -657,16 +662,17 @@ public class BundleController {
             responseCode = SwaggerConstants.HTTP_400,
             description = SwaggerConstants.INVALID_BUNDLE_DESCRIPTION)
       })
-  public ExtractedBundleResponse extractBundle(@RequestBody Bundle bundle) {
-    validateIncomingBundle(bundle);
-    return bundleExtractionService.extract(bundle);
+  public ExtractedBundleResponse extractBundle(@RequestBody IBaseResource resource) {
+    validateIncomingResource(resource);
+    return bundleExtractionService.extract(resource);
   }
 
   @PostMapping(path = ControllerMappingConstants.HTML_PATH, produces = MediaType.TEXT_HTML_VALUE)
   @Operation(
-      summary = "Render FHIR Bundle as human-readable HTML",
+      summary = "Render FHIR Bundle or Communication as human-readable HTML",
       description =
-          "Reverse maps a FHIR Bundle (NHCX or clinical-record) and renders it as an HTML page")
+          "Reverse maps a FHIR Bundle (NHCX or clinical-record) or a bare NRCES Communication"
+              + " resource and renders it as an HTML page")
   @ApiResponses(
       value = {
         @ApiResponse(
@@ -677,11 +683,11 @@ public class BundleController {
             responseCode = SwaggerConstants.HTTP_400,
             description = SwaggerConstants.INVALID_BUNDLE_DESCRIPTION)
       })
-  public ResponseEntity<String> renderBundleHtml(@RequestBody Bundle bundle) {
-    validateIncomingBundle(bundle);
+  public ResponseEntity<String> renderBundleHtml(@RequestBody IBaseResource resource) {
+    validateIncomingResource(resource);
     return ResponseEntity.ok()
         .contentType(MediaType.TEXT_HTML)
-        .body(bundleHtmlRenderService.render(bundle));
+        .body(bundleHtmlRenderService.render(resource));
   }
 
   private Bundle validateAndReturnBundle(Bundle bundle) {
@@ -718,6 +724,14 @@ public class BundleController {
       }
     }
     return resource;
+  }
+
+  private void validateIncomingResource(IBaseResource resource) {
+    if (resource instanceof Bundle bundle) {
+      validateIncomingBundle(bundle);
+    } else if (resource instanceof DomainResource domainResource) {
+      validateAndReturnResource(domainResource);
+    }
   }
 
   private void validateIncomingBundle(Bundle bundle) {

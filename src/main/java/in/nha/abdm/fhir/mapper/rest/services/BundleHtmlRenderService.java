@@ -7,7 +7,7 @@ import in.nha.abdm.fhir.mapper.rest.common.helpers.ExtractedBundleResponse;
 import java.util.Iterator;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,8 +30,8 @@ public class BundleHtmlRenderService {
   private final BundleExtractionService bundleExtractionService;
   private final ObjectMapper objectMapper;
 
-  public String render(Bundle bundle) {
-    ExtractedBundleResponse extracted = bundleExtractionService.extract(bundle);
+  public String render(IBaseResource resource) {
+    ExtractedBundleResponse extracted = bundleExtractionService.extract(resource);
     JsonNode node = objectMapper.valueToTree(extracted.data());
 
     StringBuilder html = new StringBuilder();

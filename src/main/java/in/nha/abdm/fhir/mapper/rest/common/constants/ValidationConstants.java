@@ -57,6 +57,7 @@ public class ValidationConstants {
   public static final String CLAIM_RESPONSE_RECORD = "ClaimResponse";
   public static final String INSURANCE_PLAN_RECORD = "InsurancePlan";
   public static final String PAYMENT_NOTICE_RECORD = "PaymentNotice";
+  public static final String COMMUNICATION_RECORD = "Communication";
   public static final String TASK_BUNDLE = "TaskBundle";
   public static final String POLICY_NUMBER_MANDATORY = "policyNumber is mandatory";
   public static final String PROVIDER_ID_MANDATORY = "providerId is mandatory";

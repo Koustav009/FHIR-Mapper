@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import in.nha.abdm.fhir.mapper.rest.common.helpers.ExtractedBundleResponse;
 import java.util.List;
 import java.util.Map;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Bundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +38,7 @@ class BundleHtmlRenderServiceTest {
             "chargeItems",
             List.of(Map.of("chargeType", "Consultation")));
 
-    when(bundleExtractionService.extract(any()))
+    when(bundleExtractionService.extract(any(IBaseResource.class)))
         .thenReturn(new ExtractedBundleResponse("Claim", data, List.of("Unresolved reference X")));
 
     String html = service.render(new Bundle());

@@ -32,6 +32,9 @@ public class FhirHttpMessageConverter extends AbstractHttpMessageConverter<IBase
   protected IBaseResource readInternal(
       Class<? extends IBaseResource> clazz, HttpInputMessage inputMessage)
       throws IOException, HttpMessageNotReadableException {
+    if (IBaseResource.class.equals(clazz)) {
+      return fhirContext.newJsonParser().parseResource(inputMessage.getBody());
+    }
     return fhirContext.newJsonParser().parseResource(clazz, inputMessage.getBody());
   }
 

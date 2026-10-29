@@ -26,11 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Claim;
 import org.hl7.fhir.r4.model.ClaimResponse;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.Communication;
 import org.hl7.fhir.r4.model.Composition;
 import org.hl7.fhir.r4.model.CoverageEligibilityRequest;
 import org.hl7.fhir.r4.model.CoverageEligibilityResponse;
@@ -60,6 +62,24 @@ public class BundleExtractionService {
   private final InsurancePlanBundleExtractor insurancePlanBundleExtractor;
   private final PaymentNoticeBundleExtractor paymentNoticeBundleExtractor;
   private final InpsBundleExtractor inpsBundleExtractor;
+  private final CommunicationBundleExtractor communicationBundleExtractor;
+
+  public ExtractedBundleResponse extract(IBaseResource resource) {
+    if (resource instanceof Bundle bundle) {
+      return extract(bundle);
+    }
+    if (resource instanceof Communication communication) {
+      return new ExtractedBundleResponse(
+          ValidationConstants.COMMUNICATION_RECORD,
+          communicationBundleExtractor.extract(communication),
+          List.of());
+    }
+    throw new FhirMapperException(
+        ErrorCode.INCORRECT_BUNDLE_TYPE,
+        "Unsupported resource type for extraction: "
+            + resource.fhirType()
+            + ". Expected Bundle or Communication");
+  }
 
   public ExtractedBundleResponse extract(Bundle bundle) {
     NhcxExtractorDefinition nhcxDefinition = identifyNhcxExtractor(bundle);
