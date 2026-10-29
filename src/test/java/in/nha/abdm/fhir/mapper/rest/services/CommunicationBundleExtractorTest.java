@@ -59,8 +59,8 @@ class CommunicationBundleExtractorTest {
     assertEquals("completed", request.getStatus());
     assertEquals("notification", request.getCategory());
     assertEquals("routine", request.getPriority());
-    assertEquals("HOSP-1", request.getSenderFacilityId());
-    assertEquals("INS-1", request.getRecipientFacilityId());
+    assertEquals("HOSP-1", request.getSenderFacilityName());
+    assertEquals("INS-1", request.getRecipientFacilityName());
     assertEquals("Cardiac arrest", request.getReasonCode());
     assertEquals("Condition/example-03", request.getReasonReference());
 

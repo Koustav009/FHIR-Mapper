@@ -25,9 +25,9 @@ public class CommunicationBundleExtractor extends FhirExtractionSupport {
                 ? firstCodingCode(communication.getCategoryFirstRep())
                 : null)
         .priority(communication.hasPriority() ? communication.getPriority().toCode() : null)
-        .senderFacilityId(
+        .senderFacilityName(
             communication.hasSender() ? referenceDisplay(communication.getSender()) : null)
-        .recipientFacilityId(
+        .recipientFacilityName(
             communication.hasRecipient()
                 ? referenceDisplay(communication.getRecipientFirstRep())
                 : null)

@@ -24,8 +24,8 @@ class MakeCommunicationResourceTest {
         .status("completed")
         .category("notification")
         .priority("routine")
-        .senderFacilityId("HOSP-1")
-        .recipientFacilityId("INS-1")
+        .senderFacilityName("HOSP-1")
+        .senderFacilityName("INS-1")
         .payload(
             List.of(
                 CommunicationPayloadResource.builder()

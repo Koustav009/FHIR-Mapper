@@ -47,11 +47,11 @@ public class CommunicationBundleRequest {
       message = ValidationConstants.COMMUNICATION_PRIORITY_MESSAGE)
   private String priority;
 
-  @Schema(description = "Facility id of the sender organisation")
-  private String senderFacilityId;
+  @Schema(description = "Name of the sender organisation")
+  private String senderFacilityName;
 
-  @Schema(description = "Facility id of the recipient organisation")
-  private String recipientFacilityId;
+  @Schema(description = "Name of the recipient organisation")
+  private String recipientFacilityName;
 
   @Schema(description = "Free text reason, resolved against SNOMED")
   private String reasonCode;

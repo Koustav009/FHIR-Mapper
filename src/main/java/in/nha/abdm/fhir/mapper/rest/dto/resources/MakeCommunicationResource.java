@@ -54,11 +54,11 @@ public class MakeCommunicationResource {
       communication.setPriority(
           Communication.CommunicationPriority.fromCode(request.getPriority()));
     }
-    if (StringUtils.isNotBlank(request.getSenderFacilityId())) {
-      communication.setSender(new Reference().setDisplay(request.getSenderFacilityId()));
+    if (StringUtils.isNotBlank(request.getSenderFacilityName())) {
+      communication.setSender(new Reference().setDisplay(request.getSenderFacilityName()));
     }
-    if (StringUtils.isNotBlank(request.getRecipientFacilityId())) {
-      communication.addRecipient(new Reference().setDisplay(request.getRecipientFacilityId()));
+    if (StringUtils.isNotBlank(request.getRecipientFacilityName())) {
+      communication.addRecipient(new Reference().setDisplay(request.getRecipientFacilityName()));
     }
     if (StringUtils.isNotBlank(request.getReasonCode())) {
       communication.addReasonCode(buildReasonCode(request.getReasonCode()));
