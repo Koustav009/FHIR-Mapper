@@ -71,4 +71,12 @@ public class CoverageEligibilityRequestBundleRequest {
   @Schema(description = "Insurance coverage/policy the eligibility is checked against")
   @Valid
   @NotNull(message = "coverage is mandatory") private CoverageResource coverage;
+
+  @Schema(description = "Indicates if this is a PMJAY request", example = "false")
+  @Builder.Default
+  private Boolean isPmjay = false;
+
+  public void setIsPmjay(Boolean isPmjay) {
+    this.isPmjay = Boolean.TRUE.equals(isPmjay);
+  }
 }

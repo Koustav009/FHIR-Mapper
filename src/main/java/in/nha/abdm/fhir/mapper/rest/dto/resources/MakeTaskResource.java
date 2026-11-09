@@ -30,7 +30,7 @@ public class MakeTaskResource {
     Task task = new Task();
     task.setId(UUID.randomUUID().toString());
     task.setMeta(buildMeta());
-    task.setStatus(Task.TaskStatus.COMPLETED);
+    task.setStatus(Task.TaskStatus.REQUESTED);
     task.setIntent(Task.TaskIntent.ORDER);
     task.setCode(buildCode());
     task.setDescription(resolveDescription(request.getDescription()));

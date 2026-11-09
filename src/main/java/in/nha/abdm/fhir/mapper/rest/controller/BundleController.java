@@ -6,12 +6,43 @@ import in.nha.abdm.fhir.mapper.rest.common.constants.ControllerMappingConstants;
 import in.nha.abdm.fhir.mapper.rest.common.constants.LogMessageConstants;
 import in.nha.abdm.fhir.mapper.rest.common.constants.SwaggerConstants;
 import in.nha.abdm.fhir.mapper.rest.common.helpers.ExtractedBundleResponse;
-import in.nha.abdm.fhir.mapper.rest.converter.*;
+import in.nha.abdm.fhir.mapper.rest.converter.ClaimConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.ClaimResponseConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.CoverageEligibilityRequestConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.CoverageEligibilityResponseConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.DiagnosticReportConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.DischargeSummaryConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.HealthDocumentConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.ImmunizationConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.InpsConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.InsurancePlanConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.InvoiceRequestConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.OPConsultationConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.PaymentNoticeConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.PrescriptionConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.TaskBundleInsurancePlanConverter;
+import in.nha.abdm.fhir.mapper.rest.converter.WellnessRecordConverter;
 import in.nha.abdm.fhir.mapper.rest.dto.resources.MakeCommunicationResource;
 import in.nha.abdm.fhir.mapper.rest.dto.validation.ValidationResult;
 import in.nha.abdm.fhir.mapper.rest.exceptions.ExceptionHandler;
 import in.nha.abdm.fhir.mapper.rest.exceptions.FhirValidationException;
-import in.nha.abdm.fhir.mapper.rest.requests.*;
+import in.nha.abdm.fhir.mapper.rest.requests.ClaimBundleRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.ClaimResponseBundleRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.CommunicationBundleRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.CoverageEligibilityRequestBundleRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.CoverageEligibilityResponseBundleRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.DiagnosticReportRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.DischargeSummaryRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.HealthDocumentRecord;
+import in.nha.abdm.fhir.mapper.rest.requests.ImmunizationRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.InpsRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.InsurancePlanBundleRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.InvoiceBundleRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.OPConsultationRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.PaymentNoticeBundleRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.PrescriptionRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.TaskBundleInsurancePlanRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.WellnessRecordRequest;
 import in.nha.abdm.fhir.mapper.rest.services.BundleExtractionService;
 import in.nha.abdm.fhir.mapper.rest.services.BundleHtmlRenderService;
 import in.nha.abdm.fhir.mapper.rest.services.FhirValidationService;
@@ -35,7 +66,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = ControllerMappingConstants.BUNDLE_BASE_PATH)
@@ -625,7 +660,7 @@ public class BundleController {
   @Operation(
       summary = "Create INPS (Indian Patient Summary) bundle",
       description =
-          "Builds an INPS document bundle (NRCES IG 7.0.0, derived from HL7 IPS 2.0.0) with"
+          "Builds an INPS document bundle (NRCES IG 6.5.0, derived from HL7 IPS 2.0.0) with"
               + " Problems, Allergies and Medications sections")
   public Bundle createInpsBundle(@Valid @RequestBody InpsRequest inpsRequest) {
     return inpsConverter.convertToInps(inpsRequest);

@@ -7,6 +7,8 @@ import in.nha.abdm.fhir.mapper.rest.requests.helpers.CoverageResource;
 import java.text.ParseException;
 import java.util.Objects;
 import java.util.UUID;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Coverage;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Meta;
@@ -26,12 +28,27 @@ public class MakeCoverageResource {
     coverage.addIdentifier(
         new Identifier()
             .setSystem(ResourceProfileIdentifier.COVERAGE_POLICY_SYSTEM)
-            .setValue(coverageResource.getPolicyNumber()));
+            .setValue(coverageResource.getPolicyNumber())
+            .setType(
+                new CodeableConcept()
+                    .addCoding(
+                        new Coding()
+                            .setCode("NH")
+                            .setDisplay("National Health Plan Identifier")
+                            .setSystem(ResourceProfileIdentifier.PROFILE_PROVIDER))));
     coverage.setStatus(resolveStatus(coverageResource.getStatus()));
     coverage.setBeneficiary(Utils.buildReference(patient.getId()));
     coverage.addPayor(Utils.buildReference(insurer.getId()));
+    coverage.setType(
+        new CodeableConcept()
+            .addCoding(
+                new Coding()
+                    .setCode("HIP")
+                    .setDisplay("health insurance plan policy")
+                    .setSystem(ResourceProfileIdentifier.ENCOUNTER_CLASS_SYSTEM)));
     if (Objects.nonNull(coverageResource.getSubscriberId())) {
       coverage.setSubscriberId(coverageResource.getSubscriberId());
+      coverage.setSubscriber(Utils.buildReference(patient.getId()));
     }
     Utils.setNarrative(coverage, "Coverage policy: " + coverageResource.getPolicyNumber());
     return coverage;

@@ -32,27 +32,27 @@ Two delivery surfaces, same codebase:
 
 ## 2. Repo Layout (Top Level)
 
-| Path | Purpose |
-|------|---------|
-| `src/main/java/in/nha/abdm/fhir/mapper/FHIRApplication.java` | `@SpringBootApplication`, `@EnableCaching` entry point |
-| `src/main/java/in/nha/abdm/fhir/mapper/Utils.java` | Shared static FHIR/date helpers (`getFormattedDateTime`, `buildReference`, narrative via `setNarrative`), used by all `Make*` builders |
-| `src/main/java/in/nha/abdm/fhir/mapper/rest/controller/` | REST controllers: `BundleController`, `ValidationController`, `SnomedController`, `TerminologyController`, `ServiceIndexController` |
-| `.../rest/converter/` | **Converters** — one per bundle type; orchestrate the build pipeline (16 total) |
-| `.../rest/services/` | Orchestration: `FhirValidationService`, `BundleExtractionService`, `InpsAggregationService`, `BundleDoctorService`, `BundleHtmlRenderService`, per-type `*BundleExtractor`s, `ServiceIndexRenderService` |
-| `.../rest/dto/resources/` | **`Make*Resource`** components — each builds one FHIR resource type; `MakeChargeItem*`/`MakeInvoice*` under `invoice/` |
-| `.../rest/dto/compositions/` | **`Make*Composition`** — builds the document-index `Composition` per record type; `InpsResources` |
-| `.../rest/requests/` | Request DTOs (`*Request`, `*BundleRequest`), nested in `requests/helpers/` |
-| `.../rest/database/h2/` | Terminology store: `tables/` (JPA entities), `repositories/`, `services/` (`SnomedService`, `TerminologyService`), `config/DbLoader` |
-| `.../rest/common/constants/` | **Every literal** (URLs, profiles, codes, paths, error codes) — nearly zero magic strings in code |
-| `.../rest/common/helpers/` | `BundleUtils`, `CompositionUtils`, `ObservationUtils`, response wrappers |
-| `.../rest/exceptions/` | `GlobalExceptionHandler` (`@ControllerAdvice`), `FhirMapperException`, `FhirValidationException`, `NotBlankFields` + validator |
-| `src/main/resources/snomed/*.json` | Seed terminology data, loaded into H2 at startup by `DbLoader` |
-| `src/main/resources/package.tgz` | **NRCES ABDM IG** NPM package (validation profiles) |
-| `src/main/resources/ips-package.tgz` | **IPS/INPS** NPM package (used by INPS validation) |
-| `src/main/resources/application.properties` | Port, H2 datasource, FHIR-validation flags, logging |
-| `src/main/resources/META-INF/spring/...AutoConfiguration.imports` | Registers `FhirMapperConfig` for library auto-config |
-| `docs/` | Rich analysis + summary docs (see §9); `fhir-mapper.yaml` = OpenAPI spec |
-| `postmanCollection/FHIR.postman_collection.json` | Ready-made requests for every endpoint |
+| Path                                                              | Purpose                                                                                                                                                                                                  |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/main/java/in/nha/abdm/fhir/mapper/FHIRApplication.java`      | `@SpringBootApplication`, `@EnableCaching` entry point                                                                                                                                                   |
+| `src/main/java/in/nha/abdm/fhir/mapper/Utils.java`                | Shared static FHIR/date helpers (`getFormattedDateTime`, `buildReference`, narrative via `setNarrative`), used by all `Make*` builders                                                                   |
+| `src/main/java/in/nha/abdm/fhir/mapper/rest/controller/`          | REST controllers: `BundleController`, `ValidationController`, `SnomedController`, `TerminologyController`, `ServiceIndexController`                                                                      |
+| `.../rest/converter/`                                             | **Converters** — one per bundle type; orchestrate the build pipeline (16 total)                                                                                                                          |
+| `.../rest/services/`                                              | Orchestration: `FhirValidationService`, `BundleExtractionService`, `InpsAggregationService`, `BundleDoctorService`, `BundleHtmlRenderService`, per-type `*BundleExtractor`s, `ServiceIndexRenderService` |
+| `.../rest/dto/resources/`                                         | **`Make*Resource`** components — each builds one FHIR resource type; `MakeChargeItem*`/`MakeInvoice*` under `invoice/`                                                                                   |
+| `.../rest/dto/compositions/`                                      | **`Make*Composition`** — builds the document-index `Composition` per record type; `InpsResources`                                                                                                        |
+| `.../rest/requests/`                                              | Request DTOs (`*Request`, `*BundleRequest`), nested in `requests/helpers/`                                                                                                                               |
+| `.../rest/database/h2/`                                           | Terminology store: `tables/` (JPA entities), `repositories/`, `services/` (`SnomedService`, `TerminologyService`), `config/DbLoader`                                                                     |
+| `.../rest/common/constants/`                                      | **Every literal** (URLs, profiles, codes, paths, error codes) — nearly zero magic strings in code                                                                                                        |
+| `.../rest/common/helpers/`                                        | `BundleUtils`, `CompositionUtils`, `ObservationUtils`, response wrappers                                                                                                                                 |
+| `.../rest/exceptions/`                                            | `GlobalExceptionHandler` (`@ControllerAdvice`), `FhirMapperException`, `FhirValidationException`, `NotBlankFields` + validator                                                                           |
+| `src/main/resources/snomed/*.json`                                | Seed terminology data, loaded into H2 at startup by `DbLoader`                                                                                                                                           |
+| `src/main/resources/package.tgz`                                  | **NRCES ABDM IG** NPM package (validation profiles)                                                                                                                                                      |
+| `src/main/resources/ips-package.tgz`                              | **IPS/INPS** NPM package (used by INPS validation)                                                                                                                                                       |
+| `src/main/resources/application.properties`                       | Port, H2 datasource, FHIR-validation flags, logging                                                                                                                                                      |
+| `src/main/resources/META-INF/spring/...AutoConfiguration.imports` | Registers `FhirMapperConfig` for library auto-config                                                                                                                                                     |
+| `docs/`                                                           | Rich analysis + summary docs (see §9); `fhir-mapper.yaml` = OpenAPI spec                                                                                                                                 |
+| `postmanCollection/FHIR.postman_collection.json`                  | Ready-made requests for every endpoint                                                                                                                                                                   |
 
 ---
 
@@ -80,10 +80,10 @@ HTTP POST /v1/bundle/{type} (JSON DTO)
 
 **Two record families** (determines bundle type — see `BundleExtractionService` for the clean split):
 
-| Family | Bundle type | Converters |
-|--------|-------------|------------|
-| **ABDM clinical records** (HI-types) | `DOCUMENT` | immunization, prescription, op-consultation, health-document, diagnostic-report, discharge-summary, wellness-record, invoice, **INPS** |
-| **NHCX insurance messages** | `COLLECTION` | coverage-eligibility-request, coverage-eligibility-response, claim, claim-response, insurance-plan, payment-notice, task-bundle-insurance-plan-request |
+| Family                               | Bundle type  | Converters                                                                                                                                             |
+| ------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **ABDM clinical records** (HI-types) | `DOCUMENT`   | immunization, prescription, op-consultation, health-document, diagnostic-report, discharge-summary, wellness-record, invoice, **INPS**                 |
+| **NHCX insurance messages**          | `COLLECTION` | coverage-eligibility-request, coverage-eligibility-response, claim, claim-response, insurance-plan, payment-notice, task-bundle-insurance-plan-request |
 
 ---
 
@@ -98,6 +98,7 @@ H2 table via its matching `*Repo` (`findAll`-style bulk insert); creates a `(cod
 composite index. Entities are `code`/`display`/`type` and implement `Displayable`.
 
 **Runtime (`SnomedService`, `@Cacheable` per category)** — each `get*Code(display)` method:
+
 1. **Phase A** — `findTop20ByDisplayContainingIgnoreCase(display)` (JPA derived query → ≤20 H2 rows).
 2. **Phase B** — fuzzy match: word-count filter (candidate words ≤ input words + 2), then
    **cosine similarity** ranking (`CosineSimilarity` from commons-text); pick the max.
@@ -111,6 +112,7 @@ Result becomes `CodeableConcept` with `text` = original input, `coding.code/disp
 Observation, Specimen, Vaccine + TypeInvoice, TypeChargeItem, and newer **LOINC, ICD-11, NAMASTE**.
 
 **Two lookup services**:
+
 - `SnomedService` — typed `get*Code()` per category, used by `Make*` builders (see §5).
 - `TerminologyService` — generic cross-system search/translate over **all** code sets (SNOMED +
   LOINC + ICD-11 + NAMASTE); backs `/v1/terminology/*`. Register new code systems in its
@@ -122,16 +124,16 @@ Observation, Specimen, Vaccine + TypeInvoice, TypeChargeItem, and newer **LOINC,
 
 From `docs/PROJECT_FLOW.md §4`, still accurate:
 
-| Builder | SNOMED calls |
-|---------|--------------|
-| `MakeConditionResource` | condition/procedure code |
-| `MakeObservationResource` / `MakeWellnessObservationResource` | observation code |
-| `MakeEncounterResource` | encounter code |
-| `MakeMedicationRequestResource` / `MakeInvoiceMedicationResource` | medicine + route codes |
-| `MakeProcedureResource`, `MakeAllergyToleranceResource`, `MakeFamilyMemberResource` | condition/procedure code |
-| `MakeServiceRequestResource`, `MakeDiagnosticLabResource` | diagnostic + observation codes |
-| `MakeImmunizationResource` | vaccine code |
-| `MakeCarePlanResource` | observation code |
+| Builder                                                                                                                          | SNOMED calls                             |
+| -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `MakeConditionResource`                                                                                                          | condition/procedure code                 |
+| `MakeObservationResource` / `MakeWellnessObservationResource`                                                                    | observation code                         |
+| `MakeEncounterResource`                                                                                                          | encounter code                           |
+| `MakeMedicationRequestResource` / `MakeInvoiceMedicationResource`                                                                | medicine + route codes                   |
+| `MakeProcedureResource`, `MakeAllergyToleranceResource`, `MakeFamilyMemberResource`                                              | condition/procedure code                 |
+| `MakeServiceRequestResource`, `MakeDiagnosticLabResource`                                                                        | diagnostic + observation codes           |
+| `MakeImmunizationResource`                                                                                                       | vaccine code                             |
+| `MakeCarePlanResource`                                                                                                           | observation code                         |
 | NHCX builders (`MakeCoverage*`, `MakeClaim*`, `MakeInsurancePlan*`, `MakePaymentNotice*`, invoice `MakeChargeItemResource` etc.) | medicine / route / existing code mapping |
 
 Newer builders beyond that doc: `MakeConsentResource`, `MakeDeviceResource`,
@@ -148,8 +150,9 @@ NPM profile support (ABDM `package.tgz` + IPS `ips-package.tgz`) → base R4 →
 snapshot generation, wrapped in a caching support.
 
 Notable behaviors:
+
 - `loadABDMProfiles` logs an **IG-version drift warning** if `package.tgz` version ≠
-  `IgVersionConstants.EXPECTED_NRCES_IG_VERSION` (currently NRCES IG 7.0.0).
+  `IgVersionConstants.EXPECTED_NRCES_IG_VERSION` (currently NRCES IG 6.5.0).
 - `normaliseTargetProfiles` strips `|version` suffixes from `targetProfile` canonicals so
   `Reference.type` validates against unpinned subclass profiles.
 - `FhirInstanceValidator` settings: no unknown extensions, `ErrorForUnknownProfiles=true`.
@@ -164,7 +167,7 @@ continue. **INPS endpoints skip validation** (see §7). `ValidationController` e
 
 ## 7. INPS (Indian Patient Summary) — special handling
 
-- `POST /v1/bundle/inps` — builds an IPS-derived document bundle (NRCES IG 7.0.0, HL7 IPS 2.0.0)
+- `POST /v1/bundle/inps` — builds an IPS-derived document bundle (NRCES IG 6.5.0, HL7 IPS 2.0.0)
   with 3 mandatory sections (Problems, Allergies, Medications) + ~13 optional sections (Past
   Problems, Pregnancy, Social History, Vital Signs, Plan of Care, Advance Directives, Alerts,
   Functional Status, Patient Story, Immunizations, Procedures, Medical Devices, Results).
@@ -194,20 +197,20 @@ continue. **INPS endpoints skip validation** (see §7). `ValidationController` e
 
 Base `/v1/bundle` (all `POST` unless noted):
 
-| Path | Purpose |
-|------|---------|
-| `/immunization` `/prescription` `/op-consultation` `/health-document` `/diagnostic-report` `/discharge-summary` `/wellness-record` `/invoice` | ABDM clinical-record bundles (DOCUMENT) |
-| `/coverage-eligibility-request` `/coverage-eligibility-response` `/claim` `/claim-response` `/insurance-plan` `/payment-notice` | NHCX insurance bundles (COLLECTION) |
-| `/task-bundle-insurance-plan-request` | NHCX `TaskBundle` — poll Task + insurer/hospital Organizations for an InsurancePlan request (COLLECTION) |
-| `/inps`, `/inps/aggregate` | INPS bundle; aggregate from existing bundles |
-| `/validate` | Validate an arbitrary bundle → `ValidationResult` (strict) |
-| `/lint` | `BundleDoctorService` — auto-repair a bundle, report fixes + before/after validation |
-| `/extract` | Reverse-map bundle → original request DTO |
-| `/html` | Render bundle as HTML |
-| `/v1/snomed/{resource}` (GET) | List codes for a category (`Condition`, `Procedure`, `Encounter`, `Medication-Route`, `Medications`, `Observations`, `Specimen`, `Vaccines`) |
-| `/v1/terminology/search?q=&category=&limit=` (GET) | Cross-system fuzzy search (SNOMED/LOINC/ICD11/NAMASTE) |
-| `/v1/terminology/translate?...` (GET) | Translate a term/code into a target category |
-| `/` (GET) | HTML service index |
+| Path                                                                                                                                          | Purpose                                                                                                                                      |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/immunization` `/prescription` `/op-consultation` `/health-document` `/diagnostic-report` `/discharge-summary` `/wellness-record` `/invoice` | ABDM clinical-record bundles (DOCUMENT)                                                                                                      |
+| `/coverage-eligibility-request` `/coverage-eligibility-response` `/claim` `/claim-response` `/insurance-plan` `/payment-notice`               | NHCX insurance bundles (COLLECTION)                                                                                                          |
+| `/task-bundle-insurance-plan-request`                                                                                                         | NHCX `TaskBundle` — poll Task + insurer/hospital Organizations for an InsurancePlan request (COLLECTION)                                     |
+| `/inps`, `/inps/aggregate`                                                                                                                    | INPS bundle; aggregate from existing bundles                                                                                                 |
+| `/validate`                                                                                                                                   | Validate an arbitrary bundle → `ValidationResult` (strict)                                                                                   |
+| `/lint`                                                                                                                                       | `BundleDoctorService` — auto-repair a bundle, report fixes + before/after validation                                                         |
+| `/extract`                                                                                                                                    | Reverse-map bundle → original request DTO                                                                                                    |
+| `/html`                                                                                                                                       | Render bundle as HTML                                                                                                                        |
+| `/v1/snomed/{resource}` (GET)                                                                                                                 | List codes for a category (`Condition`, `Procedure`, `Encounter`, `Medication-Route`, `Medications`, `Observations`, `Specimen`, `Vaccines`) |
+| `/v1/terminology/search?q=&category=&limit=` (GET)                                                                                            | Cross-system fuzzy search (SNOMED/LOINC/ICD11/NAMASTE)                                                                                       |
+| `/v1/terminology/translate?...` (GET)                                                                                                         | Translate a term/code into a target category                                                                                                 |
+| `/` (GET)                                                                                                                                     | HTML service index                                                                                                                           |
 
 Success = `201 Created` (bundle endpoints) / `200` (extract, html, validate, lint, GETs).
 

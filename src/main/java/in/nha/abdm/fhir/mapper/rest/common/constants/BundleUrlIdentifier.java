@@ -17,6 +17,7 @@ public class BundleUrlIdentifier {
   public static final String ABHA_HEALTH_ID_URL = "https://healthid.ndhm.gov.in";
   public static final String NDHM_IDENTIFIER_TYPE_CODE_SYSTEM =
       "https://nrces.in/ndhm/fhir/r4/CodeSystem/ndhm-identifier-type-code";
+  public static final String NHCX_URL = "https://nhcx.abdm.gov.in";
 
   @Value("${abdm.wrapper.url:https://ABDM_WRAPPER/bundle}")
   public void setWrapperUrl(String wrapperUrl) {

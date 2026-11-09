@@ -80,7 +80,8 @@ public class MakeCoverageEligibilityRequestResource {
         .addCoding(
             new Coding()
                 .setSystem(ResourceProfileIdentifier.PROCESS_PRIORITY_SYSTEM)
-                .setCode(code));
+                .setCode(code)
+                .setDisplay(code));
   }
 
   private List<EligibilityRequestPurpose> resolvePurpose(List<String> purposes) {

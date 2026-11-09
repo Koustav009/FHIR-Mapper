@@ -5,6 +5,7 @@ import in.nha.abdm.fhir.mapper.Utils;
 import in.nha.abdm.fhir.mapper.rest.common.constants.BundleUrlIdentifier;
 import in.nha.abdm.fhir.mapper.rest.common.constants.ResourceProfileIdentifier;
 import in.nha.abdm.fhir.mapper.rest.common.helpers.BundleUtils;
+import in.nha.abdm.fhir.mapper.rest.common.helpers.OrganisationResource;
 import in.nha.abdm.fhir.mapper.rest.dto.resources.MakeCoverageEligibilityRequestResource;
 import in.nha.abdm.fhir.mapper.rest.dto.resources.MakeCoverageResource;
 import in.nha.abdm.fhir.mapper.rest.dto.resources.MakeOrganisationResource;
@@ -13,8 +14,11 @@ import in.nha.abdm.fhir.mapper.rest.dto.resources.MakePractitionerResource;
 import in.nha.abdm.fhir.mapper.rest.exceptions.ExceptionHandler;
 import in.nha.abdm.fhir.mapper.rest.requests.CoverageEligibilityRequestBundleRequest;
 import java.text.ParseException;
+import java.util.Objects;
 import java.util.UUID;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Coverage;
 import org.hl7.fhir.r4.model.CoverageEligibilityRequest;
 import org.hl7.fhir.r4.model.Identifier;
@@ -55,9 +59,17 @@ public class CoverageEligibilityRequestConverter {
       CoverageEligibilityRequestBundleRequest request) {
     try {
       Patient patient = makePatientResource.getPatient(request.getPatient());
+      if (request.getIsPmjay() != null && request.getIsPmjay())
+        patient = updatePatientforPmjay(patient, request.getPatient().getPatientReference());
       Practitioner enterer = makePractitionerResource.getPractitioner(request.getEnterer());
       Organization provider = makeOrganisationResource.getOrganization(request.getProvider());
+      provider.addType(buildTypeProv(request.getProvider()));
+      provider.setIdentifier(null);
+      provider.addIdentifier(buildIdentifierProv(request.getProvider()));
       Organization insurer = makeOrganisationResource.getOrganization(request.getInsurer());
+      insurer.addType(buildTypePayer(request.getInsurer()));
+      insurer.setIdentifier(null);
+      insurer.addIdentifier(buildIdentifierPayer(request.getInsurer()));
       Location facility = createFacility(request, provider);
       Coverage coverage = makeCoverageResource.getCoverage(request.getCoverage(), patient, insurer);
       CoverageEligibilityRequest eligibilityRequest =
@@ -69,6 +81,90 @@ public class CoverageEligibilityRequestConverter {
     } catch (Exception e) {
       throw ExceptionHandler.handle(e, log);
     }
+  }
+
+  private CodeableConcept buildTypeProv(OrganisationResource organisationResource) {
+    return new CodeableConcept()
+        .addCoding(
+            new Coding()
+                .setCode("prov")
+                .setSystem("http://terminology.hl7.org/CodeSystem/organization-type")
+                .setDisplay("Healthcare Provider"));
+  }
+
+  private CodeableConcept buildTypePayer(OrganisationResource organisationResource) {
+    return new CodeableConcept()
+        .addCoding(
+            new Coding()
+                .setCode("pay")
+                .setSystem("http://terminology.hl7.org/CodeSystem/organization-type")
+                .setDisplay("Payer"));
+  }
+
+  private Identifier buildIdentifierProv(OrganisationResource organisationResource) {
+    Coding coding =
+        new Coding()
+            .setCode("NPI")
+            .setSystem(ResourceProfileIdentifier.PROFILE_PROVIDER)
+            .setDisplay("National provider identifier");
+
+    String facilityId =
+        Objects.nonNull(organisationResource) && organisationResource.getFacilityId() != null
+            ? organisationResource.getFacilityId()
+            : UUID.randomUUID().toString();
+
+    return new Identifier()
+        .setType(new CodeableConcept().addCoding(coding))
+        .setSystem(BundleUrlIdentifier.NHCX_URL)
+        .setValue(facilityId);
+  }
+
+  private Identifier buildIdentifierPayer(OrganisationResource organisationResource) {
+    Coding coding =
+        new Coding()
+            .setCode("NIIP")
+            .setSystem(ResourceProfileIdentifier.PROFILE_PROVIDER)
+            .setDisplay("National Insurance Payor Identifier (Payor)");
+
+    String facilityId =
+        Objects.nonNull(organisationResource) && organisationResource.getFacilityId() != null
+            ? organisationResource.getFacilityId()
+            : UUID.randomUUID().toString();
+
+    return new Identifier()
+        .setType(new CodeableConcept().addCoding(coding))
+        .setSystem(BundleUrlIdentifier.NHCX_URL)
+        .setValue(facilityId);
+  }
+
+  private Patient updatePatientforPmjay(Patient patient, String patientId) {
+    patient.setIdentifier(null);
+
+    Identifier identifierPmj =
+        new Identifier()
+            .setType(
+                new CodeableConcept()
+                    .addCoding(
+                        new Coding()
+                            .setCode("PMJAY")
+                            .setSystem(BundleUrlIdentifier.NDHM_IDENTIFIER_TYPE_CODE_SYSTEM)
+                            .setDisplay("Pradhan Mantri Jan Aarogya Yojana (PMJAY) ID")))
+            .setValue(patientId);
+    Identifier identifier =
+        new Identifier()
+            .setType(
+                new CodeableConcept()
+                    .addCoding(
+                        new Coding()
+                            .setCode("MB")
+                            .setSystem(ResourceProfileIdentifier.PROFILE_PROVIDER)
+                            .setDisplay("Member Number")))
+            .setValue(patientId);
+
+    patient.addIdentifier(identifierPmj);
+    patient.addIdentifier(identifier);
+
+    return patient;
   }
 
   private Location createFacility(

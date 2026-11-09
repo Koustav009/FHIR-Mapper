@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   fhir-mapper:
     build:
@@ -6,7 +5,7 @@ services:
       dockerfile: Dockerfile
     image: fhir-mapper:latest
     ports:
-      - '8085:8085'
+      - "8085:8085"
     networks:
       - docker_network
     extra_hosts:
