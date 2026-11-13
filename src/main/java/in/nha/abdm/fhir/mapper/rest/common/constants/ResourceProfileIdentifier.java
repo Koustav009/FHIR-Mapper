@@ -100,6 +100,12 @@ public class ResourceProfileIdentifier {
       "http://terminology.hl7.org/CodeSystem/financialtaskcode";
   public static final String TASK_INPUT_TYPE_CODE_SYSTEM =
       "https://nrces.in/ndhm/fhir/r4/CodeSystem/ndhm-task-input-type-code";
+  public static final String CLAIM_ITEM_BENEFIT_CATEGORY_SYSTEM =
+      "https://nrces.in/ndhm/fhir/r4/CodeSystem/ndhm-benefit-category";
+  public static final String CLAIM_ITEM_PROCEDURE_CODE_SYSTEM =
+      "https://nrces.in/ndhm/fhir/r4/CodeSystem/ndhm-procedure-code";
+  public static final String CLAIM_ITEM_PROGRAM_CODE_SYSTEM =
+      "https://nrces.in/ndhm/fhir/r4/CodeSystem/ndhm-program-code";
   public static final String PAYMENT_STATUS_SYSTEM =
       "http://terminology.hl7.org/CodeSystem/paymentstatus";
   public static final String DIAGNOSIS_TYPE_SYSTEM =

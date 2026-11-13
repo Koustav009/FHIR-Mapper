@@ -1,15 +1,21 @@
 /* (C) 2026 */
 package in.nha.abdm.fhir.mapper.rest.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import in.nha.abdm.fhir.mapper.rest.common.constants.ValidationConstants;
+import in.nha.abdm.fhir.mapper.rest.common.helpers.FlexibleLocalDateTimeDeserializer;
 import in.nha.abdm.fhir.mapper.rest.common.helpers.OrganisationResource;
 import in.nha.abdm.fhir.mapper.rest.common.helpers.PatientResource;
+import in.nha.abdm.fhir.mapper.rest.common.helpers.PractitionerResource;
+import in.nha.abdm.fhir.mapper.rest.common.helpers.SupportingInfoResource;
 import in.nha.abdm.fhir.mapper.rest.requests.helpers.ClaimItemResource;
+import in.nha.abdm.fhir.mapper.rest.requests.helpers.ClaimProcedureResource;
 import in.nha.abdm.fhir.mapper.rest.requests.helpers.CoverageResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,7 +56,21 @@ public class ClaimBundleRequest {
   private String created;
 
   @Valid
+  @NotNull(message = "procedure is mandatory") private List<ClaimProcedureResource> procedures;
+
+  @JsonDeserialize(using = FlexibleLocalDateTimeDeserializer.class)
+  @Schema(description = "Date the ... (yyyy-MM-dd or ISO date-time)")
+  private LocalDateTime billablePeriodStart;
+
+  @JsonDeserialize(using = FlexibleLocalDateTimeDeserializer.class)
+  @Schema(description = "Date the ... (yyyy-MM-dd or ISO date-time)")
+  private LocalDateTime billablePeriodEnd;
+
+  @Valid
   @NotNull(message = ValidationConstants.PATIENT_MANDATORY) private PatientResource patient;
+
+  @Valid
+  @NotNull(message = ValidationConstants.PRACTITIONER_MANDATORY) private List<PractitionerResource> practitioners;
 
   @Schema(description = "Provider organisation submitting the claim (HIP)")
   @Valid
@@ -68,6 +88,10 @@ public class ClaimBundleRequest {
       description = "Diagnoses for the claim (required by NRCES); free-text or coded display terms",
       example = "[\"Type 2 diabetes mellitus\"]")
   private List<String> diagnoses;
+
+  @Schema(description = "Supporting information documents for the claim")
+  @Valid
+  private List<SupportingInfoResource> supportingInfo;
 
   @Schema(description = "Billable line items")
   @Valid

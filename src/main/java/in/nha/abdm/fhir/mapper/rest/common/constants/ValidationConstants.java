@@ -127,4 +127,7 @@ public class ValidationConstants {
   public static final String GENDER_MESSAGE = "gender must be male, female, other, unknown";
   public static final String INTENT_PATTERN = "^(proposal|plan|order|option)$";
   public static final String PROCEDURE_STATUS_PATTERN = "COMPLETED|INPROGRESS";
+  public static final String PROCEDURE_TYPE_PATTERN = "^(?i)(conservative|medical|surgical)$";
+  public static final String PROCEDURE_TYPE_MESSAGE =
+      "procedureType must be conservative, medical or surgical";
 }

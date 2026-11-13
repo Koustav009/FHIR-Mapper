@@ -1,9 +1,12 @@
 /* (C) 2026 */
 package in.nha.abdm.fhir.mapper.rest.requests.helpers;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import in.nha.abdm.fhir.mapper.rest.common.helpers.FlexibleLocalDateTimeDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +22,11 @@ public class ClaimItemResource {
   @NotBlank(message = "Claim item service description is mandatory")
   private String service;
 
+  @Schema(
+      description = "Package/procedure code from ndhm-procedure-code, e.g. MG004B",
+      example = "MG004B")
+  private String code;
+
   @Schema(description = "Quantity billed", example = "2")
   private Integer quantity;
 
@@ -29,4 +37,26 @@ public class ClaimItemResource {
       description = "Net amount for the line; defaults to unitPrice * quantity",
       example = "10000.00")
   private Double net;
+
+  @Schema(description = "Price factor; not applied to net", example = "1")
+  private Double factor;
+
+  @JsonDeserialize(using = FlexibleLocalDateTimeDeserializer.class)
+  @Schema(
+      description = "Serviced period start (yyyy-MM-dd or ISO date-time)",
+      example = "2026-09-10")
+  private LocalDateTime servicedPeriodStart;
+
+  @JsonDeserialize(using = FlexibleLocalDateTimeDeserializer.class)
+  @Schema(description = "Serviced period end (yyyy-MM-dd or ISO date-time)", example = "2026-09-10")
+  private LocalDateTime servicedPeriodEnd;
+
+  @Schema(description = "Ward tier modifier code (PMJAY), e.g. STRAT006a", example = "STRAT006a")
+  private String modifier;
+
+  @Schema(description = "Ward tier modifier display (PMJAY)", example = "Routine Ward")
+  private String modifierDisplay;
+
+  @Schema(description = "Programme code (PMJAY), e.g. AB-PMJAY", example = "AB-PMJAY")
+  private String programCode;
 }

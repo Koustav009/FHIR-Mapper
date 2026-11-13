@@ -7,7 +7,10 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import in.nha.abdm.fhir.mapper.rest.common.constants.LogMessageConstants;
 import in.nha.abdm.fhir.mapper.rest.common.constants.MapperConstants;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.*;
@@ -55,6 +58,13 @@ public class Utils {
     }
     dateTimeString = dateTimeString.trim();
     return new DateTimeType(dateTimeString).getValue();
+  }
+
+  public static Date toDate(LocalDateTime localDateTime) {
+    if (Objects.isNull(localDateTime)) {
+      return null;
+    }
+    return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
   }
 
   public static Reference buildReference(String id) {

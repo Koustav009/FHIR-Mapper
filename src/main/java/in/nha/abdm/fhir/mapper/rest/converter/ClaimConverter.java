@@ -9,9 +9,14 @@ import in.nha.abdm.fhir.mapper.rest.dto.resources.MakeClaimResource;
 import in.nha.abdm.fhir.mapper.rest.dto.resources.MakeCoverageResource;
 import in.nha.abdm.fhir.mapper.rest.dto.resources.MakeOrganisationResource;
 import in.nha.abdm.fhir.mapper.rest.dto.resources.MakePatientResource;
+import in.nha.abdm.fhir.mapper.rest.dto.resources.MakePractitionerResource;
 import in.nha.abdm.fhir.mapper.rest.exceptions.ExceptionHandler;
+import in.nha.abdm.fhir.mapper.rest.exceptions.StreamUtils;
 import in.nha.abdm.fhir.mapper.rest.requests.ClaimBundleRequest;
 import java.text.ParseException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Claim;
@@ -20,6 +25,7 @@ import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Meta;
 import org.hl7.fhir.r4.model.Organization;
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Practitioner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,16 +35,19 @@ public class ClaimConverter {
   private static final Logger log = LoggerFactory.getLogger(ClaimConverter.class);
 
   private final MakePatientResource makePatientResource;
+  private final MakePractitionerResource makePractitionerResource;
   private final MakeOrganisationResource makeOrganisationResource;
   private final MakeCoverageResource makeCoverageResource;
   private final MakeClaimResource makeClaimResource;
 
   public ClaimConverter(
       MakePatientResource makePatientResource,
+      MakePractitionerResource makePractitionerResource,
       MakeOrganisationResource makeOrganisationResource,
       MakeCoverageResource makeCoverageResource,
       MakeClaimResource makeClaimResource) {
     this.makePatientResource = makePatientResource;
+    this.makePractitionerResource = makePractitionerResource;
     this.makeOrganisationResource = makeOrganisationResource;
     this.makeCoverageResource = makeCoverageResource;
     this.makeClaimResource = makeClaimResource;
@@ -47,10 +56,15 @@ public class ClaimConverter {
   public Bundle makeClaimBundle(ClaimBundleRequest request) {
     try {
       Patient patient = makePatientResource.getPatient(request.getPatient());
+      List<Practitioner> practitioners =
+          Optional.ofNullable(request.getPractitioners()).orElse(Collections.emptyList()).stream()
+              .map(StreamUtils.wrapException(makePractitionerResource::getPractitioner))
+              .toList();
       Organization provider = makeOrganisationResource.getOrganization(request.getProvider());
       Organization insurer = makeOrganisationResource.getOrganization(request.getInsurer());
       Coverage coverage = makeCoverageResource.getCoverage(request.getCoverage(), patient, insurer);
-      Claim claim = makeClaimResource.getClaim(request, patient, provider, insurer, coverage);
+      Claim claim =
+          makeClaimResource.getClaim(request, patient, practitioners, provider, insurer, coverage);
 
       return buildBundle(request, claim, patient, provider, insurer, coverage);
     } catch (Exception e) {
