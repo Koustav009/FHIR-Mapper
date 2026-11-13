@@ -14,6 +14,7 @@ import in.nha.abdm.fhir.mapper.rest.requests.helpers.CoverageResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,7 +71,8 @@ public class ClaimBundleRequest {
   @NotNull(message = ValidationConstants.PATIENT_MANDATORY) private PatientResource patient;
 
   @Valid
-  @NotNull(message = ValidationConstants.PRACTITIONER_MANDATORY) private List<PractitionerResource> practitioners;
+  @NotEmpty(message = ValidationConstants.PRACTITIONER_MANDATORY)
+  private List<PractitionerResource> practitioners;
 
   @Schema(description = "Provider organisation submitting the claim (HIP)")
   @Valid
