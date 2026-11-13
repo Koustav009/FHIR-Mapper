@@ -20,7 +20,10 @@ subprojects {
 }
 afterEvaluate {
     def spotless = tasks.findByName('spotlessApply')
-    if (spotless) {
+    // Skip the finalizer during watch mode (-PnoSpotless) to avoid a second
+    // build triggered by spotless rewriting the file after each compile.
+    def disableFinalizer = project.hasProperty('noSpotless')
+    if (spotless && !disableFinalizer) {
         tasks.withType(JavaCompile) {
             finalizedBy(spotless)
 

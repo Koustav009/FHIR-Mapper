@@ -31,6 +31,19 @@ Recommended RAM: Systems with more than 8 GB RAM
 - Using any of the above approaches the server will be running on port `8085`
 - Open `http://localhost:8085/` to confirm the service is up; it returns a small JSON index of the available base paths. The API reference is published separately at [venuajitesh.github.io/FHIR-Mapper](https://venuajitesh.github.io/FHIR-Mapper/) — the application itself does not host a Swagger UI.
 
+### Auto-Reload on File Change (Development)
+The app uses [spring-boot-devtools](https://docs.spring.io/spring-boot/reference/using/devtools.html) to restart automatically when compiled classes change. Gradle does not recompile on save by itself, so run two terminals:
+
+```bash
+./gradlew bootRun                              # terminal 1 — starts the app on :8085
+./gradlew classes --continuous -PnoSpotless    # terminal 2 — watches files, recompiles on change
+```
+
+When you edit any `.java` file, Gradle recompiles, devtools detects the new classes and the app restarts in ~1 second. Resource changes (`application.properties`, templates) also trigger a restart.
+
+- `-PnoSpotless` skips the `spotlessApply` finalizer during watch mode; otherwise spotless rewrites the file after each compile, which triggers a second build cycle.
+- Keep formatting up to date by running `./gradlew spotlessApply` occasionally (or before committing — normal builds and CI still enforce formatting via spotless).
+
 ### ABDM PROFILES (HI-Types)
 - The HI type is primarily defined based on the data being collected. However the type of interaction should also be considered.
 - If the data which is collected is not defined in the structured field for any HI-type you can create a pdf and attach to the particular bundle in the documents.
