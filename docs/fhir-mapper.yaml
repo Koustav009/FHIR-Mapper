@@ -60,7 +60,7 @@ paths:
                             display: Clinical consultation report
                       subject:
                         reference: urn:uuid:9d805c8b-70df-4afd-94fe-b5e742cec1fd
-                        display: Venu Ajitesh
+                        display: John Doe
                       date: "2024-05-02T06:33:37Z"
                       title: Clinical consultation report
                       section:
@@ -73,7 +73,7 @@ paths:
                       resourceType: Patient
                       id: 9d805c8b-70df-4afd-94fe-b5e742cec1fd
                       name:
-                        - text: Venu Ajitesh
+                        - text: John Doe
                       gender: male
                       birthDate: "1940-04-27"
                   - fullUrl: urn:uuid:6ee0ab71-4ded-4ce5-99cb-ab8db999e366
@@ -135,11 +135,11 @@ paths:
                             display: Prescription record
                       subject:
                         reference: urn:uuid:77f5ee38-6b10-46da-9244-911a1f69e675
-                        display: Venu Ajitesh
+                        display: John Doe
                       date: "2024-05-01T06:33:37Z"
                       author:
                         - reference: urn:uuid:b2fb465d-797f-4bf0-849c-e6c897680620
-                          display: Dr.Venu Ajitesh
+                          display: Dr. John Doe
                       title: Prescription
                       section:
                         - title: Prescription
@@ -287,10 +287,10 @@ paths:
                         text: Blood Glucose Test
                       subject:
                         reference: urn:uuid:0eacf6cc-893e-4fc1-b36c-7c8bb7469abb
-                        display: Venu Ajitesh
+                        display: John Doe
                       issued: "2024-11-24T03:04:38.989+05:30"
                       performer:
-                        - display: Dr.Venu Ajitesh
+                        - display: Dr. John Doe
                       result:
                         - reference: urn:uuid:b3fd8b51-d7f3-4a71-b274-20911cca7081
                       conclusion: Negative for disease
@@ -376,13 +376,13 @@ paths:
                             display: Immunization record
                       subject:
                         reference: urn:uuid:52310530-7c32-481b-b162-02fce6d9842f
-                        display: Venu Ajitesh
+                        display: John Doe
                       encounter:
                         reference: urn:uuid:22fe6712-e1c9-40c2-92ff-b81b28d5dc4c
                       date: "2026-04-10T10:12:25Z"
                       author:
                         - reference: urn:uuid:928db1c2-5cd7-48a1-a249-481632ba8737
-                          display: Dr.Venu Ajitesh
+                          display: Dr. John Doe
                       title: Immunization record
                       custodian:
                         reference: urn:uuid:7fe492f2-81cc-414b-8341-2cd014385722
@@ -415,9 +415,9 @@ paths:
                                 code: MR
                                 display: Medical record number
                           system: https://healthid.abdm.gov.in
-                          value: ajitesh6x
+                          value: johndoe
                       name:
-                        - text: Venu Ajitesh
+                        - text: John Doe
                       gender: male
                       birthDate: "1940-04-27"
                   - fullUrl: urn:uuid:928db1c2-5cd7-48a1-a249-481632ba8737
@@ -438,7 +438,7 @@ paths:
                           system: https://doctor.abdm.gov.in
                           value: Predator
                       name:
-                        - text: Dr.Venu Ajitesh
+                        - text: Dr. John Doe
                   - fullUrl: urn:uuid:7fe492f2-81cc-414b-8341-2cd014385722
                     resource:
                       resourceType: Organization
@@ -472,7 +472,7 @@ paths:
                         display: Ambulatory
                       subject:
                         reference: urn:uuid:52310530-7c32-481b-b162-02fce6d9842f
-                        display: Venu Ajitesh
+                        display: John Doe
                       period:
                         start: "2026-04-10T10:12:25Z"
                   - fullUrl: urn:uuid:de7b6f5c-9841-45de-9ad0-0128c4d0056d
@@ -561,7 +561,7 @@ paths:
                       docStatus: final
                       subject:
                         reference: urn:uuid:52310530-7c32-481b-b162-02fce6d9842f
-                        display: Venu Ajitesh
+                        display: John Doe
                       content:
                         - attachment:
                             contentType: application/pdf
@@ -666,12 +666,12 @@ paths:
               status: issued
               encounter: ""
               patient:
-                name: Venu Ajitesh
-                patientReference: ajitesh6x
+                name: John Doe
+                patientReference: johndoe
                 gender: male
                 birthDate: 1940-04-27
               practitioners:
-                - name: Dr.Venu Ajitesh
+                - name: Dr. John Doe
                   practitionerId: Predator
               organisation:
                 facilityName: Predator_HIP
@@ -789,12 +789,12 @@ paths:
                       subject:
                         reference: Patient/94ecc23e-c798-4023-bcb2-15cd687166c4
                         type: Patient
-                        display: Venu Ajitesh
+                        display: John Doe
                       date: "2024-05-01T12:03:37+05:30"
                       author:
                         - reference: Practitioner/Predator
                           type: Practitioner
-                          display: Dr.Venu Ajitesh
+                          display: Dr. John Doe
                       title: Invoice Record
                       custodian:
                         reference: Organisation/ec12d2da-22f2-4b05-9cd6-5c66efa0853f
@@ -840,9 +840,9 @@ paths:
                                 code: MR
                                 display: Medical record number
                           system: "https://healthid.abdm.gov.in"
-                          value: ajitesh6x
+                          value: johndoe
                       name:
-                        - text: Venu Ajitesh
+                        - text: John Doe
                       gender: male
                       birthDate: "1940-04-27"
                   - fullUrl: Practitioner/Predator
@@ -863,7 +863,7 @@ paths:
                           system: "https://doctor.abdm.gov.in"
                           value: Predator
                       name:
-                        - text: Dr.Venu Ajitesh
+                        - text: Dr. John Doe
                   - fullUrl: Organisation/ec12d2da-22f2-4b05-9cd6-5c66efa0853f
                     resource:
                       resourceType: Organization
@@ -897,7 +897,7 @@ paths:
                         display: Ambulatory
                       subject:
                         reference: Patient/94ecc23e-c798-4023-bcb2-15cd687166c4
-                        display: Venu Ajitesh
+                        display: John Doe
                       period:
                         start: "2024-05-01T06:33:37Z"
                   - fullUrl: Manufacturer/e9f1c715-19a3-463b-ae5b-cafe2d1466ab
@@ -927,7 +927,7 @@ paths:
                         text: Pharmacy
                       subject:
                         reference: Patient/94ecc23e-c798-4023-bcb2-15cd687166c4
-                        display: Venu Ajitesh
+                        display: John Doe
                       date: "2024-05-01T12:03:37+05:30"
                       issuer:
                         reference: Organisation/ec12d2da-22f2-4b05-9cd6-5c66efa0853f
@@ -1258,12 +1258,12 @@ components:
         visitDate: 2000-06-23
         authoredOn: 2024-05-20T06:33:37Z
         patient:
-          name: Venu Ajitesh
-          patientReference: ajitesh6x
+          name: John Doe
+          patientReference: johndoe
           gender: male
           birthDate: 1940-04-27
         practitioners:
-          - name: Dr.Venu Ajitesh
+          - name: Dr. John Doe
             practitionerId: Predator
         organisation:
           facilityName: Predator_HIP
@@ -1424,12 +1424,12 @@ components:
         authoredOn: 2001-05-22
         encounter: ""
         patient:
-          name: Venu Ajitesh
-          patientReference: ajitesh6x
+          name: John Doe
+          patientReference: johndoe
           gender: male
           birthDate: 2001-04-27
         practitioners:
-          - name: Dr.Venu Ajitesh
+          - name: Dr. John Doe
             practitionerId: Predator
         organisation:
           facilityName: Predator_HIP
@@ -1492,13 +1492,13 @@ components:
         bundleType: HealthDocumentRecord
         careContextReference: visist 21-03-2024
         patient:
-          name: Venu Ajitesh
-          patientReference: ajitesh6x
+          name: John Doe
+          patientReference: johndoe
           gender: male
           birthDate: 2001-04-27
         date: 2001-04-27
         practitioners:
-          - name: Dr.Venu Ajitesh
+          - name: Dr. John Doe
             practitionerId: Predator
         organisation:
           facilityName: Predator_HIP
@@ -1559,12 +1559,12 @@ components:
         careContextReference: visist 21-03-2024
         visitDate: 2024-05-20
         patient:
-          name: Venu Ajitesh
-          patientReference: ajitesh6x
+          name: John Doe
+          patientReference: johndoe
           gender: male
           birthDate: 2001-04-27
         practitioners:
-          - name: Dr.Venu Ajitesh
+          - name: Dr. John Doe
             practitionerId: Predator
         organisation:
           facilityName: Predator_HIP
@@ -1637,12 +1637,12 @@ components:
         careContextReference: visit 21-03-2025
         authoredOn: 2024-06-15
         patient:
-          name: Venu Ajitesh
-          patientReference: ajitesh6x
+          name: John Doe
+          patientReference: johndoe
           gender: male
           birthDate: 2001-04-27
         practitioners:
-          - name: Dr.Venu Ajitesh
+          - name: Dr. John Doe
             practitionerId: Predator
         organisation:
           facilityName: Predator_HIP
@@ -1730,15 +1730,15 @@ components:
         bundleType: DischargeSummaryRecord
         careContextReference: visist 21-03-2024
         patient:
-          name: Venu Ajitesh
-          patientReference: ajitesh6x
+          name: John Doe
+          patientReference: johndoe
           gender: male
           birthDate: 2001-04-27
         visitDetails:
           visitDate: 2024-05-07T06:33:37.361Z
           dischargeDate: 2024-05-20T06:33:37.361Z
         practitioners:
-          - name: Dr.Venu Ajitesh
+          - name: Dr. John Doe
             practitionerId: Predator
         organisation:
           facilityName: Predator_HIP
@@ -1877,12 +1877,12 @@ components:
         authoredOn: 2025-03-21
         careContextReference: visist 21-03-2025
         patient:
-          name: Venu Ajitesh
-          patientReference: ajitesh6x
+          name: John Doe
+          patientReference: johndoe
           gender: male
           birthDate: 2001-04-27
         practitioners:
-          - name: Dr.Venu Ajitesh
+          - name: Dr. John Doe
             practitionerId: Predator
         organisation:
           facilityName: Predator_HIP
@@ -2072,12 +2072,12 @@ components:
         status: final
         compositionDate: 2026-08-14T10:00:00.000Z
         patient:
-          name: Venu Ajitesh
-          patientReference: ajitesh6x
+          name: John Doe
+          patientReference: johndoe
           gender: male
           birthDate: 2001-04-27
         practitioners:
-          - name: Dr.Venu Ajitesh
+          - name: Dr. John Doe
             practitionerId: Predator
         organisation:
           facilityName: Predator_HIP
@@ -2240,11 +2240,11 @@ components:
         name:
           type: string
           description: Full name of the patient
-          example: Venu Ajitesh
+          example: John Doe
         patientReference:
           type: string
           description: Unique identifier or reference for the patient (e.g., ABHA Address)
-          example: ajitesh6x
+          example: johndoe
         gender:
           type: string
           description: Gender of the patient
@@ -2263,7 +2263,7 @@ components:
         name:
           type: string
           description: Full name of the practitioner
-          example: Dr. Venu Ajitesh
+          example: Dr. John Doe
         practitionerId:
           type: string
           description: Unique identifier for the practitioner (e.g., HPR ID)

@@ -7,7 +7,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'io.github.venuajitesh'
+group = 'in.nha.abdm'
 version = '1.0.0-SNAPSHOT'
 subprojects {
     spotless {
@@ -104,24 +104,11 @@ publishing {
             pom {
                 name = 'FHIR Mapper'
                 description = 'A professional FHIR mapping library for ABDM integration'
-                url = 'https://github.com/VenuAjitesh/FHIR-Mapper'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
                         url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
-                }
-                developers {
-                    developer {
-                        id = 'VenuAjitesh'
-                        name = 'Venu Ajitesh'
-                        email = 'venuajitesh@github.com'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/VenuAjitesh/FHIR-Mapper.git'
-                    developerConnection = 'scm:git:ssh://github.com/VenuAjitesh/FHIR-Mapper.git'
-                    url = 'https://github.com/VenuAjitesh/FHIR-Mapper'
                 }
             }
         }

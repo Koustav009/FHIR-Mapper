@@ -51,6 +51,6 @@ public class PatientResource {
       example = "22-7225-4829-5255")
   private String abhaNumber;
 
-  @Schema(description = "ABHA Address: self-declared ABHA username", example = "ajitesh6x@abdm")
+  @Schema(description = "ABHA Address: self-declared ABHA username", example = "johndoe@abdm")
   private String abhaAddress;
 }

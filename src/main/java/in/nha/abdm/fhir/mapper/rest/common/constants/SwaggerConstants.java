@@ -198,9 +198,9 @@ public class SwaggerConstants {
   // PatientResource
   public static final String PATIENT_DESC = "Patient demographic details";
   public static final String PATIENT_NAME_DESC = "Patient's full name";
-  public static final String PATIENT_NAME_EXAMPLE = "Venu Ajitesh";
+  public static final String PATIENT_NAME_EXAMPLE = "John Doe";
   public static final String PATIENT_REF_DESC = "Patient's reference";
-  public static final String PATIENT_REF_EXAMPLE = "ajitesh6x@sbx";
+  public static final String PATIENT_REF_EXAMPLE = "johndoe@sbx";
   public static final String PATIENT_GENDER_DESC = "Patient's gender";
   public static final String PATIENT_GENDER_EXAMPLE = "male";
   public static final String PATIENT_BIRTHDATE_DESC = "Patient's birth date (YYYY-MM-DD)";
@@ -209,7 +209,7 @@ public class SwaggerConstants {
   // PractitionerResource
   public static final String PRACTITIONER_DESC = "Practitioner details";
   public static final String PRACTITIONER_NAME_DESC = "Practitioner's full name";
-  public static final String PRACTITIONER_NAME_EXAMPLE = "Dr.Venu Ajitesh";
+  public static final String PRACTITIONER_NAME_EXAMPLE = "Dr. John Doe";
   public static final String PRACTITIONER_ID_DESC = "Practitioner's unique ID/Reference";
   public static final String PRACTITIONER_ID_EXAMPLE = "Predator@hpr";
 

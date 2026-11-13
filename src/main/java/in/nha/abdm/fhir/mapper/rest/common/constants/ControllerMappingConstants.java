@@ -33,5 +33,5 @@ public class ControllerMappingConstants {
   public static final String TERMINOLOGY_TRANSLATE_PATH = "/translate";
   public static final String SERVICE_NAME = "FHIR-Mapper";
   public static final String SERVICE_STATUS_UP = "UP";
-  public static final String DOCUMENTATION_URL = "https://venuajitesh.github.io/FHIR-Mapper/";
+  public static final String DOCUMENTATION_URL = "docs/fhir-mapper.yaml";
 }

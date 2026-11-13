@@ -1,6 +1,16 @@
 /* (C) 2026 */
 package in.nha.abdm.fhir.mapper.rest.dto.resources;
 
+import in.nha.abdm.fhir.mapper.Utils;
+import in.nha.abdm.fhir.mapper.rest.common.constants.BundleUrlIdentifier;
+import in.nha.abdm.fhir.mapper.rest.common.constants.ClaimSupportingInfoCategory;
+import in.nha.abdm.fhir.mapper.rest.common.constants.ResourceProfileIdentifier;
+import in.nha.abdm.fhir.mapper.rest.common.helpers.SupportingInfoResource;
+import in.nha.abdm.fhir.mapper.rest.database.h2.services.SnomedService;
+import in.nha.abdm.fhir.mapper.rest.database.h2.tables.SnomedConditionProcedure;
+import in.nha.abdm.fhir.mapper.rest.requests.ClaimBundleRequest;
+import in.nha.abdm.fhir.mapper.rest.requests.helpers.ClaimItemResource;
+import in.nha.abdm.fhir.mapper.rest.requests.helpers.ClaimProcedureResource;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -8,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
+import lombok.RequiredArgsConstructor;
 import org.hl7.fhir.r4.model.Attachment;
 import org.hl7.fhir.r4.model.Claim;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -25,18 +35,6 @@ import org.hl7.fhir.r4.model.Practitioner;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.SimpleQuantity;
 import org.springframework.stereotype.Component;
-
-import in.nha.abdm.fhir.mapper.Utils;
-import in.nha.abdm.fhir.mapper.rest.common.constants.BundleUrlIdentifier;
-import in.nha.abdm.fhir.mapper.rest.common.constants.ClaimSupportingInfoCategory;
-import in.nha.abdm.fhir.mapper.rest.common.constants.ResourceProfileIdentifier;
-import in.nha.abdm.fhir.mapper.rest.common.helpers.SupportingInfoResource;
-import in.nha.abdm.fhir.mapper.rest.database.h2.services.SnomedService;
-import in.nha.abdm.fhir.mapper.rest.database.h2.tables.SnomedConditionProcedure;
-import in.nha.abdm.fhir.mapper.rest.requests.ClaimBundleRequest;
-import in.nha.abdm.fhir.mapper.rest.requests.helpers.ClaimItemResource;
-import in.nha.abdm.fhir.mapper.rest.requests.helpers.ClaimProcedureResource;
-import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -292,7 +290,8 @@ public class MakeClaimResource {
     if (Objects.isNull(procedureType)) {
       return null;
     }
-    String typeDisplay = Character.toUpperCase(procedureType.charAt(0)) + procedureType.substring(1);
+    String typeDisplay =
+        Character.toUpperCase(procedureType.charAt(0)) + procedureType.substring(1);
     return new CodeableConcept()
         .addCoding(
             new Coding()
@@ -336,9 +335,10 @@ public class MakeClaimResource {
     if (Objects.isNull(item.getProgramCode()) || item.getProgramCode().isBlank()) {
       return;
     }
-    String display = "AB-PMJAY".equals(item.getProgramCode())
-        ? "Ayushman Bharat Pradhan Mantri Jan Arogya Yojana (AB-PMJAY)"
-        : item.getProgramCode();
+    String display =
+        "AB-PMJAY".equals(item.getProgramCode())
+            ? "Ayushman Bharat Pradhan Mantri Jan Arogya Yojana (AB-PMJAY)"
+            : item.getProgramCode();
     itemComponent
         .addProgramCode()
         .addCoding(
@@ -367,10 +367,12 @@ public class MakeClaimResource {
   }
 
   private CodeableConcept resolveType(String claimType) {
-    String resolvedType = (Objects.isNull(claimType) || claimType.isBlank())
-        ? "Inpatient care management (procedure)"
-        : claimType;
-    SnomedConditionProcedure snomedConditionProcedure = snomedService.getConditionProcedureCode(resolvedType);
+    String resolvedType =
+        (Objects.isNull(claimType) || claimType.isBlank())
+            ? "Inpatient care management (procedure)"
+            : claimType;
+    SnomedConditionProcedure snomedConditionProcedure =
+        snomedService.getConditionProcedureCode(resolvedType);
     return new CodeableConcept()
         .addCoding(
             new Coding()

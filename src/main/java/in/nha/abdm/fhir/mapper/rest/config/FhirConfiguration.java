@@ -8,6 +8,7 @@ import ca.uhn.fhir.validation.FhirValidator;
 import in.nha.abdm.fhir.mapper.rest.common.constants.IgVersionConstants;
 import in.nha.abdm.fhir.mapper.rest.common.constants.LogMessageConstants;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.common.hapi.validation.support.*;
 import org.hl7.fhir.common.hapi.validation.validator.FhirInstanceValidator;
@@ -19,6 +20,7 @@ import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -42,10 +44,13 @@ public class FhirConfiguration implements WebMvcConfigurer {
   }
 
   @Bean
-  public FhirValidator fhirValidator(FhirContext fhirContext) {
+  public FhirValidator fhirValidator(
+      FhirContext fhirContext,
+      @Value("${fhir.validation.remote-terminology.enabled:false}")
+          boolean remoteTerminologyEnabled) {
     FhirValidator validator = fhirContext.newValidator();
 
-    IValidationSupport chain = createValidationSupportChain(fhirContext);
+    IValidationSupport chain = createValidationSupportChain(fhirContext, remoteTerminologyEnabled);
 
     FhirInstanceValidator instanceValidator = configureInstanceValidator(chain);
 
@@ -53,7 +58,8 @@ public class FhirConfiguration implements WebMvcConfigurer {
     return validator;
   }
 
-  private IValidationSupport createValidationSupportChain(FhirContext fhirContext) {
+  private IValidationSupport createValidationSupportChain(
+      FhirContext fhirContext, boolean remoteTerminologyEnabled) {
     DefaultProfileValidationSupport defaultSupport =
         new DefaultProfileValidationSupport(fhirContext);
     CommonCodeSystemsTerminologyService commonTerminology =
@@ -71,16 +77,18 @@ public class FhirConfiguration implements WebMvcConfigurer {
         new RemoteTerminologyServiceValidationSupport(fhirContext);
     remoteTerminology.setBaseUrl("https://tx.fhir.org/r4");
 
-    ValidationSupportChain chain =
-        new ValidationSupportChain(
-            npmSupport,
-            defaultSupport,
-            inMemoryTerminology,
-            commonTerminology,
-            remoteTerminology,
-            new SnapshotGeneratingValidationSupport(fhirContext));
+    List<IValidationSupport> supports = new ArrayList<>();
+    supports.add(npmSupport);
+    supports.add(defaultSupport);
+    supports.add(inMemoryTerminology);
+    supports.add(commonTerminology);
+    if (remoteTerminologyEnabled) {
+      supports.add(remoteTerminology);
+    }
+    supports.add(new SnapshotGeneratingValidationSupport(fhirContext));
 
-    return new CachingValidationSupport(chain);
+    return new CachingValidationSupport(
+        new ValidationSupportChain(supports.toArray(new IValidationSupport[0])));
   }
 
   private void loadABDMProfiles(NpmPackageValidationSupport npmSupport) {

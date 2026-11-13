@@ -7,7 +7,7 @@ This library provides comprehensive FHIR mapping services for ABDM (Ayushman Bha
 Add the following dependency to your `build.gradle`:
 
 ```gradle
-implementation 'io.github.venuajitesh:fhir-mapper:1.0.0-SNAPSHOT'
+implementation 'in.nha.abdm:fhir-mapper:1.0.0-SNAPSHOT'
 ```
 
 ## Integration with Spring Boot

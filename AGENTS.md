@@ -188,8 +188,7 @@ continue. **INPS endpoints skip validation** (see §7). `ValidationController` e
   warnings.
 - `POST /v1/bundle/html` — renders that extraction as an HTML page (`BundleHtmlRenderService`).
 - `GET /` — small HTML service index (`ServiceIndexController` + `ServiceIndexRenderService`).
-  The app does **not** host Swagger UI; the spec lives at venuajitesh.github.io/FHIR-Mapper and
-  `docs/fhir-mapper.yaml`.
+  The app does **not** host Swagger UI; the spec lives in `docs/fhir-mapper.yaml`
 
 ---
 

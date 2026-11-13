@@ -12,7 +12,14 @@ services:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
     environment:
-      JAVA_OPTS: "-Xms256m -Xmx512m"
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      JAVA_OPTS: "${JAVA_OPTS:--Xms256m -Xmx512m}"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8085/"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
 
 networks:
   docker_network:

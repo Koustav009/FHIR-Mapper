@@ -29,7 +29,7 @@ Recommended RAM: Systems with more than 8 GB RAM
 * If you have chosen to install Java and gradle components, then here is how you can bring the service up:
   - Go to root of this repository and start fhir-mapper by running `gradle bootrun`
 - Using any of the above approaches the server will be running on port `8085`
-- Open `http://localhost:8085/` to confirm the service is up; it returns a small JSON index of the available base paths. The API reference is published separately at [venuajitesh.github.io/FHIR-Mapper](https://venuajitesh.github.io/FHIR-Mapper/) — the application itself does not host a Swagger UI.
+- Open `http://localhost:8085/` to confirm the service is up; it returns a small JSON index of the available base paths. The API spec is available at `docs/fhir-mapper.yaml` — the application itself does not host a Swagger UI.
 
 ### Auto-Reload on File Change (Development)
 The app uses [spring-boot-devtools](https://docs.spring.io/spring-boot/reference/using/devtools.html) to restart automatically when compiled classes change. Gradle does not recompile on save by itself, so run two terminals:
@@ -77,7 +77,7 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
 
 ---
 ### APIs for generating the FHIR bundle
-- For Swagger-ui, check [here](https://venuajitesh.github.io/FHIR-Mapper/)
+- For the API spec, check `docs/fhir-mapper.yaml`
 
 <details>
   <summary><span style="font-weight:bold; font-size:16px;"> 📄 DiagnosticReportRecord </span></summary>
@@ -91,13 +91,13 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
       "careContextReference": "visist 21-03-2024", 
       "visitDate": "2006-04-22", 
       "patient": { 
-        "name": "Venu Ajitesh", 
-        "patientReference": "ajitesh6x", 
+        "name": "John Doe", 
+        "patientReference": "johndoe", 
         "gender": "male",
         "birthDate": "2001-04-27"
       },
       "practitioners": [{  
-        "name": "Dr.Venu Ajitesh", 
+        "name": "Dr. John Doe", 
         "practitionerId": "Predator"
       }],
       "organisation": {
@@ -143,13 +143,13 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
     "bundleType":"DischargeSummaryRecord", //mandatory
     "careContextReference":"visist 21-03-2024", //mandatory
     "patient":{ //mandatory
-        "name":"Venu Ajitesh", //mandatory
-        "patientReference":"ajitesh6x", //mandatory
+        "name":"John Doe", //mandatory
+        "patientReference":"johndoe", //mandatory
         "gender":"male",
         "birthDate":"2001-04-27"
     },
     "practitioners":[{ //mandatory
-        "name":"Dr.Venu Ajitesh", //mandatory
+        "name":"Dr. John Doe", //mandatory
         "practitionerId":"Predator"
     }],
     "organisation":{ //mandatory
@@ -270,14 +270,14 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
     "bundleType":"HealthDocumentRecord", //mandatory
     "careContextReference":"visist 21-03-2024", //mandatory
     "patient":{ //mandatory
-        "name":"Venu Ajitesh", //mandatory
-        "patientReference":"ajitesh6x", //mandatory
+        "name":"John Doe", //mandatory
+        "patientReference":"johndoe", //mandatory
         "gender":"male",
         "birthDate":"2001-04-27"
     },
     "authoredOn":"2001-04-27", //mandatory
     "practitioners":[{ //mandatory
-        "name":"Dr.Venu Ajitesh", //mandatory
+        "name":"Dr. John Doe", //mandatory
         "practitionerId":"Predator"
     }],
     "organisation":{
@@ -304,13 +304,13 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
     "careContextReference":"visit 21-03-2024", //mandatory
     "authoredOn":"2022-02-14", //mandatory
     "patient":{ //mandatory
-        "name":"Venu Ajitesh", //mandatory
-        "patientReference":"ajitesh6x", //mandatory
+        "name":"John Doe", //mandatory
+        "patientReference":"johndoe", //mandatory
         "gender":"male",
         "birthDate":"2001-04-27"
     },
     "practitioners":[{ //mandatory
-        "name":"Dr.Venu Ajitesh", //mandatory
+        "name":"Dr. John Doe", //mandatory
         "practitionerId":"Predator"
     }],
     "organisation":{
@@ -343,13 +343,13 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
     "careContextReference":"visist 21-03-2025", //mandatory
     "visitDate":"2000-06-23", //mandatory
     "patient":{ //mandatory
-        "name":"Venu Ajitesh", //mandatory
-        "patientReference":"ajitesh6x", //mandatory
+        "name":"John Doe", //mandatory
+        "patientReference":"johndoe", //mandatory
         "gender":"male",
         "birthDate":"2001-04-27"
     },
     "practitioners":[{ //mandatory
-        "name":"Dr.Venu Ajitesh", //mandatory
+        "name":"Dr. John Doe", //mandatory
         "practitionerId":"Predator"
     }],
     "organisation":{
@@ -478,13 +478,13 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
     "authoredOn":"2001-05-22", //mandatory
     "encounter":"",
     "patient":{ //mandatory
-        "name":"Venu Ajitesh", //mandatory
-        "patientReference":"ajitesh6x", //mandatory
+        "name":"John Doe", //mandatory
+        "patientReference":"johndoe", //mandatory
         "gender":"male",
         "birthDate":"2001-04-27"
     },
     "practitioners":[{ //mandatory
-        "name":"Dr.Venu Ajitesh", //mandatory
+        "name":"Dr. John Doe", //mandatory
         "practitionerId":"Predator"
     }],
     "organisation":{
@@ -530,13 +530,13 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
     "careContextReference":"visist 21-03-2025", //mandatory
     "authoredOn":"2024-02-11", //mandatory
     "patient":{ //mandatory
-        "name":"Venu Ajitesh", //mandatory
-        "patientReference":"ajitesh6x", //mandatory
+        "name":"John Doe", //mandatory
+        "patientReference":"johndoe", //mandatory
         "gender":"male",
         "birthDate":"2001-04-27"
     },
     "practitioners":[{ //mandatory
-        "name":"Dr.Venu Ajitesh", //mandatory
+        "name":"Dr. John Doe", //mandatory
         "practitionerId":"Predator"
     }],
     "organisation":{
@@ -633,14 +633,14 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
       "status": "issued",
       "encounter": "",
       "patient": {
-          "name": "Venu Ajitesh",
-          "patientReference": "ajitesh6x",
+          "name": "John Doe",
+          "patientReference": "johndoe",
           "gender": "male",
           "birthDate": "1940-04-27"
       },
       "practitioners": [
           {
-              "name": "Dr.Venu Ajitesh",
+              "name": "Dr. John Doe",
               "practitionerId": "Predator"
           }
       ],
@@ -757,13 +757,13 @@ The system includes an embedded H2 database with SNOMED codes used in ABDM profi
     "status": "final", //mandatory
     "compositionDate": "2026-08-14T10:00:00.000Z", //mandatory
     "patient": { //mandatory
-        "name": "Venu Ajitesh", //mandatory
-        "patientReference": "ajitesh6x", //mandatory
+        "name": "John Doe", //mandatory
+        "patientReference": "johndoe", //mandatory
         "gender": "male",
         "birthDate": "2001-04-27"
     },
     "practitioners": [{ //mandatory
-        "name": "Dr.Venu Ajitesh", //mandatory
+        "name": "Dr. John Doe", //mandatory
         "practitionerId": "Predator"
     }],
     "organisation": {
